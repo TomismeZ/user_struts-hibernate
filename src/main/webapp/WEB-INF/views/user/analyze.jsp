@@ -1,64 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%
 	String path = request.getContextPath();
 %>
-<div class="user-analyze">
-	<div class="gender-analyze">
-		<h5>用户性别分析统计</h5>
-		<div>
-			<span></span>male
-		</div>
-		<canvas id="canvas" height="150" width="400"></canvas>
+<div id="right" class="right" style="display: flex; margin-top: 50px;">
+	<div style="flex-basis:300px;">
+		<canvas id="userGenderChartCanvas"></canvas>
 	</div>
-	<div class="date-analyze">
-		<h5>用户创建日期统计</h5>
-		<div>
-			<span></span>创建日期
-		</div>
-		<canvas id="canvas1" height="150" width="500"></canvas>
+	<div style="width: 500px; height: 450px; display: flex; justify-content: center;	">
+		<canvas id="userCreateChartCanvas"></canvas>
 	</div>
-
 </div>
 
-<script type="text/javascript" src="<%=path%>/plugins/Chart.js"></script>
+<script type="text/javascript" src="<%=path%>/plugins/Chart.min.js"></script>
 <script type="text/javascript">
-	var ctx = new Chart(document.getElementById("canvas").getContext("2d"));
-	var ctx1 = new Chart(document.getElementById("canvas1").getContext("2d"));
-	var options = {
-		scaleFontSize : 13,
-		scaleFontColor : "#ffa45e"
-	};
+$(function() {
+    resizeWindow();
 
-	// 饼状图  
-	var pieChart = [ {
-		value : 50,
-		color : "#FF6E8F"
-	}, {
-		value : 30,
-		color : "#40ACEF"
-	},
-	/*  {value: 60, color: "#ffddfb"},  */
-	];
-	var myPieChart = ctx.Pie(pieChart);
+    // 浏览器窗口大小调整时，触发 resize 事件，之后重新调整界面高度
+    $(window).resize(function() {
+        resizeWindow();
+    });
+})
 
-	// 线型图  
-	var LineChart = {
-		labels : [ "Ruby", "jQuery", "Java", "ASP.Net", "PHP" ],
-		datasets : [ {
-			fillColor : "rgba(151,249,190,0.5)",
-			strokeColor : "rgba(255,255,255,1)",
-			pointColor : "rgba(220,220,220,1)",
-			pointStrokeColor : "#fff",
-			data : [ 10, 20, 30, 40, 50 ]
-		}, {
-			fillColor : "rgba(252,147,65,0.5)",
-			strokeColor : "rgba(255,255,255,1)",
-			pointColor : "rgba(173,173,173,1)",
-			pointStrokeColor : "#fff",
-			data : [ 28, 68, 40, 19, 96 ]
-		} ]
-	};
-	var myLineChart = ctx1.Line(LineChart, options);
+function resizeWindow() {
+    // 浏览器窗口高度 - header高度 = 内容区高度
+    var contentHeight = $(window).height() - 80;
+    $("#left").height(contentHeight);
+    $("#right").height(contentHeight);
+}
+</script>
+<script type="text/javascript">
+// 用户性别统计参数（饼状图）
+var userGenderChartConfig = {
+    type : 'pie',
+    data : {
+        labels : ${userGenderData.names},
+        datasets : [ {
+            data : ${userGenderData.values},
+            backgroundColor : [ "#FF6384", "#36A2EB" ]
+        } ]
+    },
+    options : {
+        title : {
+            display : true,
+            text : '用户性别分布统计'
+        },
+        responsive : true
+    }
+};
+
+// 用户创建日期统计参数（折线图）
+var userCreateChartConfig = {
+    type : 'line',
+    data : {
+        labels : ${userCreateData.names},
+        datasets : [ {
+            label: "创建日期",
+            fill: false,
+            data : ${userCreateData.values}
+        } ]
+    },
+    options : {
+        title : {
+            display : true,
+            text : '用户创建日期统计'
+        },
+        responsive : true
+    }
+};
+
+$(function() {
+    // 生成用户性别统计图
+    var userGenderChartCtx = document.getElementById("userGenderChartCanvas").getContext("2d");
+    var  userGenderChartCanvas = new Chart(userGenderChartCtx, userGenderChartConfig);
+    
+    // 生成用户创建日期统计图            
+    var userCreateChartCtx = document.getElementById("userCreateChartCanvas").getContext("2d");
+    var  userCreateChartCanvas = new Chart(userCreateChartCtx, userCreateChartConfig);
+});
 </script>

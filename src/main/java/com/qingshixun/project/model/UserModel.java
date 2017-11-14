@@ -55,7 +55,7 @@ public class UserModel {
 	// 创建时间(updateable=false表示编辑后，不更新此字段)
 	@Column(nullable = true, length = 19)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE)
-	private Date creatTime = new Date(System.currentTimeMillis());
+	private Date createTime = new Date(System.currentTimeMillis());
 
 	// 最后更新时间
 	@Column(nullable = true, length = 19)
@@ -111,11 +111,11 @@ public class UserModel {
 	}
 
 	public Date getCreatTime() {
-		return creatTime;
+		return createTime;
 	}
 
-	public void setCreatTime(Date creatTime) {
-		this.creatTime = creatTime;
+	public void setCreatTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public Date getUpdateTime() {
@@ -129,7 +129,7 @@ public class UserModel {
 	@Override
 	public String toString() {
 		return "UserModel [id=" + id + ", name=" + name + ", gender=" + gender + ", password=" + password
-				+ ", passwordAgain=" + passwordAgain + ", email=" + email + ", creatTime=" + creatTime + ", updateTime="
+				+ ", passwordAgain=" + passwordAgain + ", email=" + email + ", createTime=" + createTime + ", updateTime="
 				+ updateTime + "]";
 	}
 

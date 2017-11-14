@@ -122,4 +122,28 @@ public class UserDaoImpl implements IUserDao {
 		return (UserModel) getCurrentSession().createQuery("FROM UserModel WHERE name=?").setParameter(0, userName).getSingleResult();
 	}
 
+	  /**
+     * 获取根据性别分组统计数据
+     * @return
+     */
+	@Override
+	public List getUserGenderNumbers() {
+		//根据 gender 分组统计用户性别人数
+        String hql = "select count(*) as number,gender from UserModel group by gender";
+        Query query = getCurrentSession().createQuery(hql);
+        return query.list();
+	}
+
+	 /**
+     * 获取根据创建日期分组统计数据
+     * @return
+     */
+	@Override
+	public List getUserCreateDateNumbers() {
+		//根据 createTime 分组统计用户创建日期人数（ 利用 MySQL 提供的 DATE_FORMAT 函数对 createTime 进行格式化）
+        String hql = "select count(*) as number,DATE_FORMAT(createTime,'%Y-%m-%d') from UserModel group by DATE_FORMAT(createTime,'%Y-%m-%d')";
+        Query query = getCurrentSession().createQuery(hql);
+        return query.list();
+	}
+
 }

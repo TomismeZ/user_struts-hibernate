@@ -29,7 +29,7 @@
 	
 	<!-- 加载配置文件 -->	
 	<context:property-placeholder location="classpath:config.properties"/>
-    <!-- 开启注解编程 -->
+    <!-- 开启注解编程,用于提供数据绑定，数字@NumberFormat和日期格式化@DateTime -->
     <!-- <mvc:annotation-driven></mvc:annotation-driven> -->
   <context:annotation-config></context:annotation-config>
 

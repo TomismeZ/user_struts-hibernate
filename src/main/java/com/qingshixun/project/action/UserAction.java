@@ -11,6 +11,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import com.opensymphony.xwork2.ActionSupport;
+import com.qingshixun.project.model.ChartData;
 import com.qingshixun.project.model.PageBean;
 import com.qingshixun.project.model.UserModel;
 import com.qingshixun.project.service.IUserService;
@@ -36,6 +37,12 @@ public class UserAction extends ActionSupport {
 	private Integer id;
 	
 	private String message;
+	
+	 //用户性别统计数据
+    private ChartData userGenderData;
+
+    //用户创建日期统计数据
+    private ChartData userCreateData;
 	/**
 	 * 跳转到登录界面
 	 * 
@@ -220,8 +227,9 @@ public class UserAction extends ActionSupport {
 	@Action(value = "toAnalyze", results = {
 			@Result(name = SUCCESS, location = "/WEB-INF/views/user/analyze.jsp")})
 	public String toAnalyze() throws Exception {
-		System.out.println("进入toAnalyze");
-		
+		 // 根据userId，查询用户信息
+        userGenderData = userService.getUserGenderData();
+        userCreateData = userService.getUserCreateData();
 		return SUCCESS;
 		
 	}
@@ -269,6 +277,26 @@ public class UserAction extends ActionSupport {
 
 	public String getMessage() {
 		return message;
+	}
+
+
+	public ChartData getUserGenderData() {
+		return userGenderData;
+	}
+
+
+	public void setUserGenderData(ChartData userGenderData) {
+		this.userGenderData = userGenderData;
+	}
+
+
+	public ChartData getUserCreateData() {
+		return userCreateData;
+	}
+
+
+	public void setUserCreateData(ChartData userCreateData) {
+		this.userCreateData = userCreateData;
 	}
 
 	

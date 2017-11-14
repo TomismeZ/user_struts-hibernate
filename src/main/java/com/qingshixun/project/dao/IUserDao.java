@@ -17,4 +17,15 @@ public interface IUserDao extends BaseDao<UserModel, Integer>{
 	
 	public UserModel findByName(String userName);
 	
+	 /**
+     * 获取根据性别分组统计数据
+     * @return
+     */
+    public List getUserGenderNumbers();
+    
+    /**
+     * 获取根据创建日期分组统计数据
+     * @return
+     */
+    public List getUserCreateDateNumbers();
 }
